@@ -11,7 +11,7 @@ spec:
     path: ./system
   destination:
     server: https://kubernetes.default.svc
-    namespace: space09
+    namespace: serene
   syncPolicy:
     automated:
       prune: true
