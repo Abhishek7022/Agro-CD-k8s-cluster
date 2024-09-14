@@ -26,22 +26,8 @@ spec:
             memory: "128Mi"
             cpu: "250m"
         ports:
-        - containerPort: 8080
+        - containerPort: 4567
         securityContext:
           runAsNonRoot: true
           runAsUser: 1000
           allowPrivilegeEscalation: false
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 30
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        terminationGracePeriodSeconds: 60
-      dnsPolicy: ClusterFirstWithHostNet  # Provides better DNS behavior in some cases

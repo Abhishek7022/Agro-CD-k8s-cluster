@@ -26,26 +26,9 @@ spec:
             memory: "256Mi"
             cpu: "500m"
         ports:
-        - containerPort: 8080
+        - containerPort: 4566
         securityContext:
           runAsNonRoot: true
           runAsUser: 1000
           allowPrivilegeEscalation: false
-        livenessProbe:
-          httpGet:
-            path: /health  # Use a more specific health endpoint if available
-            port: 80
-          initialDelaySeconds: 15
-          periodSeconds: 20
-          failureThreshold: 3  # Fail after 3 unsuccessful attempts
-        readinessProbe:
-          httpGet:
-            path: /ready  # Use a readiness endpoint for checking app readiness
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 15
-        terminationGracePeriodSeconds: 60  # Graceful shutdown for production traffic
-      imagePullSecrets:
-      - name: regcred  # Use a Docker registry secret if required
-      dnsPolicy: ClusterFirst  # Change back to default unless needed
       restartPolicy: Always  # Ensure the pod always restarts in production environments

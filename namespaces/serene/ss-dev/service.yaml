@@ -9,6 +9,6 @@ spec:
     app: serene-app-dv
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 8080  # Targets port 80 in the container
+      port: 4546
+      targetPort: 4567  # Targets port 80 in the container
   type: ClusterIP  # Internal communication only within the cluster (default)

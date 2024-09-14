@@ -9,6 +9,6 @@ spec:
     app: serene-app-pr
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 8080  # Targets port 80 in the container
+      port: 4545
+      targetPort: 4566  # Targets port 80 in the container
   type: ClusterIP  # Internal communication only within the cluster (default)
