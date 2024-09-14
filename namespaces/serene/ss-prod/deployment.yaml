@@ -1,11 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: serene-space-pr
   labels:
     app: serene-app-pr
+    app.kubernetes.io/instance: my-space-app-prod
+  name: serene-space-pr
+  namespace: serene-pr
 spec:
-  replicas: 3  # Increase replicas for high availability
+  replicas: 3
   selector:
     matchLabels:
       app: serene-app-pr
@@ -15,20 +17,20 @@ spec:
         app: serene-app-pr
     spec:
       containers:
-      - name: myapp
-        image: abhishek7022/seabiscuit:v1.0  # Pin to a stable version for production
-        imagePullPolicy: IfNotPresent
-        resources:
-          limits:
-            memory: "512Mi"  # Increased limits for production load
-            cpu: "1000m"
-          requests:
-            memory: "256Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 80
-        securityContext:
-          runAsNonRoot: false
-          runAsUser: 0
-          allowPrivilegeEscalation: true
-      restartPolicy: Always  # Ensure the pod always restarts in production environments
+        - image: abhishek7022/seabiscuit:v1.0
+          imagePullPolicy: Always
+          name: my-space-app
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: true
+            runAsNonRoot: false
+            runAsUser: 0
+      restartPolicy: Always
