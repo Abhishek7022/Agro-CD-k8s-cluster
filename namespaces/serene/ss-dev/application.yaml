@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-space-app-dev
-  namespace: serene-dv
+  namespace: argocd
 spec:
   project: serene-space-app-dev
   source:
