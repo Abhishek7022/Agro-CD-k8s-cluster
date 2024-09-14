@@ -26,7 +26,7 @@ spec:
             memory: "128Mi"
             cpu: "250m"
         ports:
-        - containerPort: 80
+        - containerPort: 8080
         securityContext:
           runAsNonRoot: true
           runAsUser: 1000

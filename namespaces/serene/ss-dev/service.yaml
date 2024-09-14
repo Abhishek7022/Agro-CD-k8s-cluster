@@ -10,5 +10,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80  # Targets port 80 in the container
+      targetPort: 8080  # Targets port 80 in the container
   type: ClusterIP  # Internal communication only within the cluster (default)
