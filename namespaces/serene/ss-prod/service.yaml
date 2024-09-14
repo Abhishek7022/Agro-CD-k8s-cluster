@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: serene-space-svc-pr
   labels:
     app: serene-app-pr
+    app.kubernetes.io/instance: my-space-app-prod
+  name: serene-space-svc-pr
+  namespace: serene-pr
 spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
   selector:
     app: serene-app-pr
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80  # Targets port 80 in the container
-  type: ClusterIP  # Internal communication only within the cluster (default)
+  type: ClusterIP
