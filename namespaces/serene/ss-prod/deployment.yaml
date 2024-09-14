@@ -26,9 +26,9 @@ spec:
             memory: "256Mi"
             cpu: "500m"
         ports:
-        - containerPort: 4566
+        - containerPort: 80
         securityContext:
-          runAsNonRoot: true
-          runAsUser: 1000
-          allowPrivilegeEscalation: false
+          runAsNonRoot: false
+          runAsUser: 0
+          allowPrivilegeEscalation: true
       restartPolicy: Always  # Ensure the pod always restarts in production environments

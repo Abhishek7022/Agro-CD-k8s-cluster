@@ -26,8 +26,8 @@ spec:
             memory: "128Mi"
             cpu: "250m"
         ports:
-        - containerPort: 4567
+        - containerPort: 80
         securityContext:
-          runAsNonRoot: true
-          runAsUser: 1000
-          allowPrivilegeEscalation: false
+          runAsNonRoot: false
+          runAsUser: 0
+          allowPrivilegeEscalation: true
