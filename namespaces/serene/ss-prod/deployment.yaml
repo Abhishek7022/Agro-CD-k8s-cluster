@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: serene-space-pr
+  labels:
+    app: serene-app-pr
+spec:
+  replicas: 3  # Increase replicas for high availability
+  selector:
+    matchLabels:
+      app: serene-app-pr
+  template:
+    metadata:
+      labels:
+        app: serene-app-pr
+    spec:
+      containers:
+      - name: myapp
+        image: abhishek7022/seabiscuit:v1.0  # Pin to a stable version for production
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "512Mi"  # Increased limits for production load
+            cpu: "1000m"
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          allowPrivilegeEscalation: false
+        livenessProbe:
+          httpGet:
+            path: /health  # Use a more specific health endpoint if available
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          failureThreshold: 3  # Fail after 3 unsuccessful attempts
+        readinessProbe:
+          httpGet:
+            path: /ready  # Use a readiness endpoint for checking app readiness
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 15
+        terminationGracePeriodSeconds: 60  # Graceful shutdown for production traffic
+      imagePullSecrets:
+      - name: regcred  # Use a Docker registry secret if required
+      dnsPolicy: ClusterFirst  # Change back to default unless needed
+      restartPolicy: Always  # Ensure the pod always restarts in production environments

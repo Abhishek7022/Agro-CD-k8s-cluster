@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-space-app-dev
+  namespace: serene-dv
+spec:
+  project: serene-space-app-dev
+  source:
+    repoURL: https://github.com/Abhishek7022/Argo-CD-k8s.git
+    targetRevision: HEAD
+    path: ./namespaces/serene/ss-dev/
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: serene-dv
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: my-space-app
-  namespace: argocd
+  name: my-space-app-prod
+  namespace: serene-pr
 spec:
-  project: system
+  project: serene-space-app-prod
   source:
     repoURL: https://github.com/Abhishek7022/Argo-CD-k8s.git
     targetRevision: HEAD
-    path: ./system
+    path: ./namespaces/serene/ss-prod/
   destination:
     server: https://kubernetes.default.svc
-    namespace: serene
+    namespace: serene-pr
   syncPolicy:
     automated:
       prune: true
