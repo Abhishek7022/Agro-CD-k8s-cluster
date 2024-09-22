@@ -17,7 +17,7 @@ spec:
         app: serene-app-pr
     spec:
       containers:
-        - image: abhishek7022/seabiscuit:v1.0
+        - image: abhishek7022/seabiscuit:testing-v0
           imagePullPolicy: Always
           name: my-space-app
           ports:
