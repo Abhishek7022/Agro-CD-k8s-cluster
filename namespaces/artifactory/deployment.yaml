@@ -15,6 +15,19 @@ spec:
       labels:
         app: artifactory
     spec:
+      securityContext:
+        fsGroup: 65534  # Use a non-root fallback group for mounted volumes
+      initContainers:
+        - name: init-chown
+          image: docker.bintray.io/jfrog/artifactory-oss:latest  # Same image as the main container
+          command: ['sh', '-c', 'chown -R $(id -u):$(id -g) /opt/jfrog/artifactory/var']
+          volumeMounts:
+            - name: artifactory-data
+              mountPath: /opt/jfrog/artifactory/var
+          securityContext:
+            runAsUser: 0  # Run as root to change ownership
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
       containers:
         - name: artifactory
           image: docker.bintray.io/jfrog/artifactory-oss:latest
@@ -23,7 +36,11 @@ spec:
           volumeMounts:
             - name: artifactory-data
               mountPath: /var/opt/jfrog/artifactory
+          securityContext:
+            runAsNonRoot: true  # Ensure the container cannot run as root
+            allowPrivilegeEscalation: false
       volumes:
         - name: artifactory-data
           persistentVolumeClaim:
             claimName: artifactory-pvc
+      restartPolicy: Always
