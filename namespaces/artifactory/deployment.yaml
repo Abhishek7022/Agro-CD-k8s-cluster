@@ -16,30 +16,25 @@ spec:
         app: artifactory
     spec:
       securityContext:
-        fsGroup: 65534  # Use a non-root fallback group for mounted volumes
+        runAsUser: 1030
+        runAsGroup: 1030
+        fsGroup: 1030  # Ensures that the mounted volume has appropriate permissions
       initContainers:
-        - name: init-chown
-          image: docker.bintray.io/jfrog/artifactory-oss:latest  # Same image as the main container
-          command: ['sh', '-c', 'chown -R $(id -u):$(id -g) /opt/jfrog/artifactory/var']
-          volumeMounts:
-            - name: artifactory-data
-              mountPath: /opt/jfrog/artifactory/var
-          securityContext:
-            runAsUser: 0  # Run as root to change ownership
-            runAsGroup: 0
-            allowPrivilegeEscalation: false
+      - name: init-chown
+        image: busybox
+        command: ['sh', '-c', 'chown -R 1030:1030 /opt/jfrog/artifactory/var']
+        volumeMounts:
+        - name: artifactory-data
+          mountPath: /opt/jfrog/artifactory/var
       containers:
-        - name: artifactory
-          image: docker.bintray.io/jfrog/artifactory-oss:latest
-          ports:
-            - containerPort: 8081
-          volumeMounts:
-            - name: artifactory-data
-              mountPath: /var/opt/jfrog/artifactory
-          securityContext:
-            allowPrivilegeEscalation: false
+      - name: artifactory
+        image: docker.bintray.io/jfrog/artifactory-oss:latest
+        ports:
+          - containerPort: 8081
+        volumeMounts:
+          - name: artifactory-data
+            mountPath: /opt/jfrog/artifactory/var
       volumes:
         - name: artifactory-data
           persistentVolumeClaim:
             claimName: artifactory-pvc
-      restartPolicy: Always
