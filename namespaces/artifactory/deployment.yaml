@@ -37,7 +37,6 @@ spec:
             - name: artifactory-data
               mountPath: /var/opt/jfrog/artifactory
           securityContext:
-            runAsNonRoot: true  # Ensure the container cannot run as root
             allowPrivilegeEscalation: false
       volumes:
         - name: artifactory-data
